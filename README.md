@@ -1,2 +1,2 @@
 # fastcov
-Just get me some coverage plots, man
+Just get me some coverage plots, gals
