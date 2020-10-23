@@ -2,6 +2,7 @@
 Just get me some coverage plots, dude
 
 # Usage
+```
 usage: fastcov.py [-h] bamfile [bamfile ...]
 
 Plot the coverage based on some bam files.
@@ -11,4 +12,4 @@ positional arguments:
 
 optional arguments:
   -h, --help  show this help message and exit
-  
+```
