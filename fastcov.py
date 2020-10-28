@@ -68,18 +68,17 @@ if __name__ == '__main__':
 
     ###
     # parse arguments
-    bamfiles = sys.argv[1:]
-    num_bamfiles = len(bamfiles)
-
     parser = argparse.ArgumentParser(description='Plot the coverage based on some bam files.')
     parser.add_argument("bamfile", nargs='+', help="Alignment files to include in the coverage plot.")
     parser.add_argument("-p", "--position", help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>] (i.e. coordinates are optional and must be 1-based and inclusive)")
+    parser.add_argument("-l", "--logscale", action='store_true', help="Use logarithmic scale on y-axis.")
     args = parser.parse_args()
 
 
     ###
     # input checking
     bamfiles = args.bamfile
+    num_bamfiles = len(bamfiles)
     for bamfile in bamfiles:
         if not os.path.isfile(bamfile):
             error(f'Not a file: {bamfile}')
@@ -137,7 +136,7 @@ if __name__ == '__main__':
 
 
     ###
-    # find out how many processes we should use
+    # find out how many processes we should use, make worker pool
     num_cpus = 2
     max_cpus = os.cpu_count()
     if not max_cpus:
@@ -148,7 +147,6 @@ if __name__ == '__main__':
         if num_bamfiles < num_cpus:
             num_cpus = num_bamfiles
         log(f'Using {num_cpus} of {max_cpus} available CPUs.')
-
 
     # make a numpy array to hold cov data
     cov_data = np.zeros([len(bamfiles), pos_len], dtype=int)
@@ -178,23 +176,32 @@ if __name__ == '__main__':
     log(f'Parsed {total_num_aln} alignments in {parse_time:.2f} seconds')
 
 
+    # get into pandas dataframe
+    data = pd.DataFrame(cov_data, index=bamfiles, columns=range(pos_start+1, pos_end+1)).T
+    # print(data)
+
+
     ###
     # plotting
-
     log('Plotting ...')
     output_name = 'fastcov_output.pdf'
 
-    # get into pandas dataframe
-    data = pd.DataFrame(cov_data, index=bamfiles).T
-    # print(data)
-
-    # apply the default theme
-    sns.set_theme()
-
     # plot it
-    sns.lineplot(data=data, linewidth=1.5)
+    sns.set(style="whitegrid")
+    fig, ax = plt.subplots(figsize=(16, 8))
 
+    p = sns.lineplot(data=data, linewidth=1.5, dashes=False)
+
+    # formatting
+    if args.logscale:
+        plt.yscale('log')
+    else:
+        yup = plt.ylim()[1]
+        plt.ylim(-yup/40, yup+(yup/40))
+
+    
     # save figure
-    plt.savefig(output_name)
+    plt.savefig(output_name, bbox_inches='tight')
     log(f'Wrote {output_name}')
     log(f'All done. Took {time.time() - main_start_time:.2f} seconds total. Have a nice day!')
+
