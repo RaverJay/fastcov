@@ -178,7 +178,6 @@ if __name__ == '__main__':
 
     # get into pandas dataframe
     data = pd.DataFrame(cov_data, index=bamfiles, columns=range(pos_start+1, pos_end+1)).T
-    # print(data)
 
 
     ###
@@ -188,18 +187,33 @@ if __name__ == '__main__':
 
     # plot it
     sns.set(style="whitegrid")
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=(20, 9))
 
-    p = sns.lineplot(data=data, linewidth=1.5, dashes=False)
+    p = sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8)
 
-    # formatting
+
+    # formatting and annotation
+    ydn, yup = plt.ylim()
     if args.logscale:
+        data_max = data.max().max()
+        next_pow_10 = 10
+        while next_pow_10 <= data_max:
+            next_pow_10 *= 10
+        plt.ylim(0.5, next_pow_10*2)
         plt.yscale('log')
     else:
-        yup = plt.ylim()[1]
         plt.ylim(-yup/40, yup+(yup/40))
 
-    
+    plt.vlines([pos_start+.5, pos_end+.5], *plt.ylim(), 'grey', linestyles='dashed', linewidth=.5)
+    plt.title(f'Coverage at {ref_name}:{pos_start+1}-{pos_end}')
+    plt.ylabel('coverage')
+    plt.xlabel('reference position')
+
+    plt.text(0.045, 0.065, str(pos_start+1), rotation=90, ha='right', va='bottom', transform=ax.transAxes)
+    plt.text(0.956, 0.065, str(pos_end), rotation=90, ha='left', va='bottom', transform=ax.transAxes)
+        
+
+
     # save figure
     plt.savefig(output_name, bbox_inches='tight')
     log(f'Wrote {output_name}')
