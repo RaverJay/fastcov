@@ -72,6 +72,7 @@ if __name__ == '__main__':
     parser.add_argument("bamfile", nargs='+', help="Alignment files to include in the coverage plot.")
     parser.add_argument("-p", "--position", help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>] (i.e. coordinates are optional and must be 1-based and inclusive)")
     parser.add_argument("-l", "--logscale", action='store_true', help="Use logarithmic scale on y-axis.")
+    parser.add_argument("-o", "--outfile", help="Specify output filename. File extension defines the format (default: fastcov_output.pdf)")
     args = parser.parse_args()
 
 
@@ -184,6 +185,9 @@ if __name__ == '__main__':
     # plotting
     log('Plotting ...')
     output_name = 'fastcov_output.pdf'
+    if args.outfile:
+        output_name = args.outfile
+
 
     # plot it
     sns.set(style="whitegrid")
