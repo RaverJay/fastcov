@@ -18,7 +18,8 @@ makes use of
 
 ## Full usage
 ```
-usage: fastcov.py [-h] [-p POSITION] [-l] [-o OUTFILE] bamfile [bamfile ...]
+usage: fastcov.py [-h] [-p POSITION] [-l] [-o OUTPUT_FILE] [-c CSV_OUT]
+                  bamfile [bamfile ...]
 
 Plot the coverage based on some bam files.
 
@@ -32,7 +33,11 @@ optional arguments:
                         Format: <ref_name>[:<start>-<stop>] (i.e. coordinates
                         are optional and must be 1-based and inclusive)
   -l, --logscale        Use logarithmic scale on y-axis.
-  -o OUTFILE, --outfile OUTFILE
-                        Specify output filename. File extension defines the
-                        format (default: fastcov_output.pdf)
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Specify plot output filename. File extension defines
+                        the format (default: fastcov_output.pdf)
+  -c CSV_OUT, --csv_out CSV_OUT
+                        Specify csv data output filename. Will disable plot
+                        output by default, specify --outfile to re-enable plot
+                        output.
 ```
