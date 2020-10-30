@@ -1,1 +1,4 @@
 tests/
+fastcov_output.pdf
+*.bam
+*.bam.bai
