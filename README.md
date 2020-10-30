@@ -1,19 +1,22 @@
 # fastcov
-Just get me some coverage plots, dude
 
-# Quick start
+For when you just need a coverage plot.
+
+Feature requests welcome!
+
+## Quick start
 `fastcov.py my_alignment.bam another_alignment.bam`
 
 generates a coverage plot called `fastcov_output.pdf`
 
-# Dependencies
+## Dependencies
 makes use of
 * `numpy`
 * `pandas`
 * `pysam`
 * `seaborn`
 
-# Full usage for now
+## Full usage
 ```
 usage: fastcov.py [-h] [-p POSITION] [-l] [-o OUTFILE] bamfile [bamfile ...]
 
