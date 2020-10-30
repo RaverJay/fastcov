@@ -72,9 +72,13 @@ if __name__ == '__main__':
     parser.add_argument("bamfile", nargs='+', help="Alignment files to include in the coverage plot.")
     parser.add_argument("-p", "--position", help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>] (i.e. coordinates are optional and must be 1-based and inclusive)")
     parser.add_argument("-l", "--logscale", action='store_true', help="Use logarithmic scale on y-axis.")
-    parser.add_argument("-o", "--outfile", help="Specify output filename. File extension defines the format (default: fastcov_output.pdf)")
+    parser.add_argument("-o", "--output_file", help="Specify plot output filename. File extension defines the format (default: fastcov_output.pdf)")
+    parser.add_argument("-c", "--csv_out", help="Specify csv data output filename. Will disable plot output by default, specify --outfile to re-enable plot output.")
     args = parser.parse_args()
 
+    ###
+    # params
+    do_plots = True
 
     ###
     # input checking
@@ -180,46 +184,57 @@ if __name__ == '__main__':
     # get into pandas dataframe
     data = pd.DataFrame(cov_data, index=bamfiles, columns=range(pos_start+1, pos_end+1)).T
 
+    ###
+    # data output
+    if args.csv_out:
+        data.to_csv(args.csv_out)
+        log(f'Wrote csv data to {args.csv_out}')
+        if not args.output_file:
+            do_plots = False
+
 
     ###
     # plotting
-    log('Plotting ...')
-    output_name = 'fastcov_output.pdf'
-    if args.outfile:
-        output_name = args.outfile
+    if do_plots:
+
+        log('Plotting ...')
+        output_name = 'fastcov_output.pdf'
+        if args.output_file:
+            output_name = args.output_file
 
 
-    # plot it
-    sns.set(style="whitegrid")
-    fig, ax = plt.subplots(figsize=(20, 9))
+        # plot it
+        sns.set(style="whitegrid")
+        fig, ax = plt.subplots(figsize=(20, 9))
 
-    p = sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8)
-
-
-    # formatting and annotation
-    ydn, yup = plt.ylim()
-    if args.logscale:
-        data_max = data.max().max()
-        next_pow_10 = 10
-        while next_pow_10 <= data_max:
-            next_pow_10 *= 10
-        plt.ylim(0.5, next_pow_10*2)
-        plt.yscale('log')
-    else:
-        plt.ylim(-yup/40, yup+(yup/40))
-
-    plt.vlines([pos_start+.5, pos_end+.5], *plt.ylim(), 'grey', linestyles='dashed', linewidth=.5)
-    plt.title(f'Coverage at {ref_name}:{pos_start+1}-{pos_end}')
-    plt.ylabel('coverage')
-    plt.xlabel('reference position')
-
-    plt.text(0.045, 0.065, str(pos_start+1), rotation=90, ha='right', va='bottom', transform=ax.transAxes)
-    plt.text(0.956, 0.065, str(pos_end), rotation=90, ha='left', va='bottom', transform=ax.transAxes)
-        
+        p = sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8)
 
 
-    # save figure
-    plt.savefig(output_name, bbox_inches='tight')
-    log(f'Wrote {output_name}')
+        # formatting and annotation
+        ydn, yup = plt.ylim()
+        if args.logscale:
+            data_max = data.max().max()
+            next_pow_10 = 10
+            while next_pow_10 <= data_max:
+                next_pow_10 *= 10
+            plt.ylim(0.5, next_pow_10*2)
+            plt.yscale('log')
+        else:
+            plt.ylim(-yup/40, yup+(yup/40))
+
+        plt.vlines([pos_start+.5, pos_end+.5], *plt.ylim(), 'grey', linestyles='dashed', linewidth=.5)
+        plt.title(f'Coverage at {ref_name}:{pos_start+1}-{pos_end}')
+        plt.ylabel('coverage')
+        plt.xlabel('reference position')
+
+        plt.text(0.045, 0.065, str(pos_start+1), rotation=90, ha='right', va='bottom', transform=ax.transAxes)
+        plt.text(0.956, 0.065, str(pos_end), rotation=90, ha='left', va='bottom', transform=ax.transAxes)
+            
+
+
+        # save figure
+        plt.savefig(output_name, bbox_inches='tight')
+        log(f'Wrote plot to {output_name}')
+
     log(f'All done. Took {time.time() - main_start_time:.2f} seconds total. Have a nice day!')
 
