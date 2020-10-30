@@ -18,7 +18,7 @@ def parse_args():
                         nargs='+',
                         help="Alignment files to include in the coverage plot.")
     parser.add_argument("-p", "--position",
-                        help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>] "
+                        help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>]\n"
                              "Coordinates are 1-based and inclusive. "
                              "Start and/or stop are optional with fallbacks 1 and <length_of_ref> respectively "
                              "(e.g. 'chr1', 'chr1:-400' and 'chr1:4000-' are legal)")
