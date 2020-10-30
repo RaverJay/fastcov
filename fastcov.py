@@ -29,7 +29,7 @@ def log(string, newline_before=False):
 
 #####
 
-def worker_get_coverage_ref_name(bamfile, ref_name, pos_start, pos_end):
+def worker_get_coverage_ref_name(bamfile, ref_name, pos_start, pos_len):
 
     log(f'{os.getpid()} working on {bamfile} ...')
     start_time = time.time()
