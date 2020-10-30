@@ -2,20 +2,20 @@
 # fastcov.py
 # SK
 
+from matplotlib import pyplot as plt
 import os
 import time
+from multiprocessing import Pool
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import pysam
-from multiprocessing import Pool
 import matplotlib as mpl
 
 from input_interpretation import parse_args, check_input, parse_or_infer_reference_and_position, BamFileChunk
 from custom_logging import log
 
-mpl.use('Agg') # do not require X window
-from matplotlib import pyplot as plt
+mpl.use('Agg')  # do not require X window
 
 
 def fastcov_main():
@@ -36,7 +36,8 @@ def fastcov_main():
 
     # position (chunk) to get coverage for
     with pysam.AlignmentFile(bam_files[0], 'rb') as pysam_bam_file:
-        chunk = parse_or_infer_reference_and_position(args, bam_files, pysam_bam_file)
+        chunk = parse_or_infer_reference_and_position(
+            args, bam_files, pysam_bam_file)
 
     log(f'Position: {chunk.reference}:{chunk.start}-{chunk.end} - length: {chunk.end-chunk.start+1}')
 
@@ -53,13 +54,15 @@ def fastcov_main():
     log(f'Made worker pool with {num_cpus} processes.')
     log(f'Parsing alignments ...')
     parse_start_time = time.time()
-    total_num_aln = parse_bam_files(bam_files, chunk, cov_data, pool, process_results)
+    total_num_aln = parse_bam_files(
+        bam_files, chunk, cov_data, pool, process_results)
     parse_end_time = time.time()
     parse_time = parse_end_time - parse_start_time
     log(f'Parsed {total_num_aln} alignments in {parse_time:.2f} seconds')
 
     # get coverage data into pandas dataframe
-    data = pd.DataFrame(cov_data, index=bam_files, columns=range(chunk.start+1, chunk.end+1)).T
+    data = pd.DataFrame(cov_data, index=bam_files,
+                        columns=range(chunk.start+1, chunk.end+1)).T
 
     # data output
     if args.csv_out:
@@ -114,7 +117,8 @@ def worker_get_coverage_ref_name(bam_file: str, chunk: BamFileChunk):
     with pysam.AlignmentFile(bam_file, 'rb') as pysam_bamfile:
 
         # fetch alignments
-        alignments = pysam_bamfile.fetch(chunk.reference, chunk.start, chunk.start+chunk.length)
+        alignments = pysam_bamfile.fetch(
+            chunk.reference, chunk.start, chunk.start+chunk.length)
         num_aln = 0
 
         coverage = np.zeros(chunk.length, dtype=int)
@@ -140,13 +144,16 @@ def worker_get_coverage_ref_name(bam_file: str, chunk: BamFileChunk):
 
 
 def plot(args, chunk, data) -> str:
+
     output_name = 'fastcov_output.pdf'
     if args.output_file:
         output_name = args.output_file
+
     # plot it
     sns.set(style="whitegrid")
     fig, ax = plt.subplots(figsize=(20, 9))
-    p = sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8)
+    sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8)
+
     # formatting and annotation
     ydn, yup = plt.ylim()
     if args.logscale:
@@ -158,12 +165,16 @@ def plot(args, chunk, data) -> str:
         plt.yscale('log')
     else:
         plt.ylim(-yup / 40, yup + (yup / 40))
-    plt.vlines([chunk.start + .5, chunk.end + .5], *plt.ylim(), 'grey', linestyles='dashed', linewidth=.5)
+    plt.vlines([chunk.start + .5, chunk.end + .5], *plt.ylim(),
+               'grey', linestyles='dashed', linewidth=.5)
     plt.title(f'Coverage at {chunk.reference}:{chunk.start + 1}-{chunk.end}')
     plt.ylabel('coverage')
     plt.xlabel('reference position')
-    plt.text(0.045, 0.065, str(chunk.start + 1), rotation=90, ha='right', va='bottom', transform=ax.transAxes)
-    plt.text(0.956, 0.065, str(chunk.end), rotation=90, ha='left', va='bottom', transform=ax.transAxes)
+    plt.text(0.045, 0.065, str(chunk.start + 1), rotation=90,
+             ha='right', va='bottom', transform=ax.transAxes)
+    plt.text(0.956, 0.065, str(chunk.end), rotation=90,
+             ha='left', va='bottom', transform=ax.transAxes)
+
     # save figure
     plt.savefig(output_name, bbox_inches='tight')
     return output_name
