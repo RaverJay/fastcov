@@ -61,7 +61,7 @@ def worker_get_coverage_ref_name(bamfile, ref_name, pos_start, pos_len):
     return num_aln, coverage
     
 
-if __name__ == '__main__':
+def fastcov_main():
     main_start_time = time.time()
     log('Started fastcov.py ...')
 
@@ -181,8 +181,9 @@ if __name__ == '__main__':
     log(f'Parsed {total_num_aln} alignments in {parse_time:.2f} seconds')
 
 
-    # get into pandas dataframe
+    # get coverage data into pandas dataframe
     data = pd.DataFrame(cov_data, index=bamfiles, columns=range(pos_start+1, pos_end+1)).T
+
 
     ###
     # data output
@@ -229,7 +230,6 @@ if __name__ == '__main__':
 
         plt.text(0.045, 0.065, str(pos_start+1), rotation=90, ha='right', va='bottom', transform=ax.transAxes)
         plt.text(0.956, 0.065, str(pos_end), rotation=90, ha='left', va='bottom', transform=ax.transAxes)
-            
 
 
         # save figure
@@ -238,3 +238,6 @@ if __name__ == '__main__':
 
     log(f'All done. Took {time.time() - main_start_time:.2f} seconds total. Have a nice day!')
 
+
+if __name__ == '__main__':
+    fastcov_main()
