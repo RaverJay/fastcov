@@ -5,7 +5,9 @@ For when you just need a coverage plot.
 Feature requests welcome!
 
 ## Quick start
-`fastcov.py my_alignment.bam another_alignment.bam`
+```
+fastcov.py my_alignment.bam another_alignment.bam
+```
 
 generates a coverage plot called `fastcov_output.pdf`
 
