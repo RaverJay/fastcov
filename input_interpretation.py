@@ -12,13 +12,16 @@ class BamFileChunk(NamedTuple):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Plot the coverage based on some bam files.')
+    parser = argparse.ArgumentParser(
+        description='Plot the coverage based on some bam files.')
     parser.add_argument("bamfile",
                         nargs='+',
                         help="Alignment files to include in the coverage plot.")
     parser.add_argument("-p", "--position",
                         help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>] "
-                             "(i.e. coordinates are optional and must be 1-based and inclusive)")
+                             "Coordinates are 1-based and inclusive. "
+                             "Start and/or stop are optional with fallbacks 1 and <length_of_ref> respectively "
+                             "(e.g. 'chr1', 'chr1:-400' and 'chr1:4000-' are legal)")
     parser.add_argument("-l", "--logscale", action='store_true',
                         help="Use logarithmic scale on y-axis.")
     parser.add_argument("-o", "--output_file",
@@ -38,10 +41,12 @@ def check_input(args):
         if not os.path.isfile(bam_file):
             error(f'Not a file: {bam_file}')
         if not os.path.isfile(bam_file + '.bai'):
-            log(f'Bam index missing for file: {bam_file}. Trying "samtools index {bam_file}" ...')
+            log(
+                f'Bam index missing for file: {bam_file}. Trying "samtools index {bam_file}" ...')
             ret = os.system(f'samtools index {bam_file}')
             if ret != 0:
-                log(f'Warning: samtools index returned exit code {ret} - everything might crash and burn.')
+                log(
+                    f'Warning: samtools index returned exit code {ret} - everything might crash and burn.')
     log(f'Number of .bam files: {num_bam_files}')
     return bam_files, num_bam_files
 
@@ -67,7 +72,8 @@ def parse_or_infer_reference_and_position(args, bam_files, pysam_bam_file) -> Ba
             if pos_start < 1:
                 error(f'Illegal start position: {pos_start}')
             if pos_start > pos_end:
-                error(f'Start position is greater than end position: {pos_start} vs {pos_end}')
+                error(
+                    f'Start position is greater than end position: {pos_start} vs {pos_end}')
 
         else:
             # no coords
@@ -75,17 +81,20 @@ def parse_or_infer_reference_and_position(args, bam_files, pysam_bam_file) -> Ba
             log(f'No coordinates given for reference {ref_name}, assuming whole reference. '
                 f'Inferring length from first alignment: {bam_files[0]}')
             if ref_name not in pysam_bam_file.references:
-                error(f'Reference {ref_name} not found in alignment {bam_files[0]}')
+                error(
+                    f'Reference {ref_name} not found in alignment {bam_files[0]}')
             # get start/stop
             pos_start = 1
-            pos_end = pysam_bam_file.lengths[pysam_bam_file.references.index(ref_name)]
+            pos_end = pysam_bam_file.lengths[pysam_bam_file.references.index(
+                ref_name)]
     else:
         # no position
         log(
             f'No position given, assuming whole reference. Taking first reference name from first alignment: {bam_files[0]}')
         ref_name = pysam_bam_file.references[0]
         pos_start = 1
-        pos_end = pysam_bam_file.lengths[pysam_bam_file.references.index(ref_name)]
+        pos_end = pysam_bam_file.lengths[pysam_bam_file.references.index(
+            ref_name)]
 
     # convert from 1-based inclusive (genomic) to 0-based half open interval (pythonic)
     pos_start -= 1
