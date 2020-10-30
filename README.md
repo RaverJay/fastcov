@@ -32,8 +32,10 @@ optional arguments:
   -h, --help            show this help message and exit
   -p POSITION, --position POSITION
                         Specify a genomic position to plot exclusively.
-                        Format: <ref_name>[:<start>-<stop>] (i.e. coordinates
-                        are optional and must be 1-based and inclusive)
+                        Format: <ref_name>[:<start>-<stop>] Coordinates are
+                        1-based and inclusive. Start and/or stop are optional
+                        with fallbacks 1 and <length_of_ref> respectively
+                        (e.g. 'chr1', 'chr1:-400' and 'chr1:4000-' are legal)
   -l, --logscale        Use logarithmic scale on y-axis.
   -o OUTPUT_FILE, --output_file OUTPUT_FILE
                         Specify plot output filename. File extension defines
