@@ -21,7 +21,7 @@ def parse_args():
                         help="Specify a genomic position to plot exclusively. Format: <ref_name>[:<start>-<stop>]\n"
                              "Coordinates are 1-based and inclusive. "
                              "Start and/or stop are optional with fallbacks 1 and <length_of_ref> respectively "
-                             "(e.g. 'chr1', 'chr1:-400' and 'chr1:4000-' are legal)")
+                             "(i.e. 'chr1', 'chr1:-200', 'chr1:100-' and 'chr1:100-200 are legal)")
     parser.add_argument("-l", "--logscale", action='store_true',
                         help="Use logarithmic scale on y-axis.")
     parser.add_argument("-o", "--output_file",
