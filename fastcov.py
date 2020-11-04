@@ -174,8 +174,11 @@ def plot(args, chunk, data) -> str:
              ha='right', va='bottom', transform=ax.transAxes)
     plt.text(0.956, 0.065, f'{(chunk.end):,}', rotation=90,
              ha='left', va='bottom', transform=ax.transAxes)
+    
+    xlims = plt.xlim()
     locs, labels = plt.xticks()
     plt.xticks(locs, [f'{int(pos):,}' for pos in locs])
+    plt.xlim(xlims)
 
     # save figure
     plt.savefig(output_name, bbox_inches='tight')
