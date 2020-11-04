@@ -35,11 +35,13 @@ def parse_args():
 
 
 def check_input(args):
-    bam_files = args.bamfile
-    num_bam_files = len(bam_files)
-    for bam_file in bam_files:
+    bam_files = []
+    for bam_file in args.bam_files:
         if not os.path.isfile(bam_file):
             error(f'Not a file: {bam_file}')
+        if bam_file in bam_files:
+            log(f'WARNING: Skipping duplicate bam file input: {bam_file}')
+            continue
         if not os.path.isfile(bam_file + '.bai'):
             log(
                 f'Bam index missing for file: {bam_file}. Trying "samtools index {bam_file}" ...')
@@ -47,6 +49,7 @@ def check_input(args):
             if ret != 0:
                 log(
                     f'Warning: samtools index returned exit code {ret} - everything might crash and burn.')
+    num_bam_files = len(bam_files)
     log(f'Number of .bam files: {num_bam_files}')
     return bam_files, num_bam_files
 
