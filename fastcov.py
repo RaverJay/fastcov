@@ -112,7 +112,7 @@ def parse_bam_files(bam_files, chunk, cov_data, pool, process_results):
 
 def worker_get_coverage_ref_name(bam_file: str, chunk: BamFileChunk):
 
-    log(f'{os.getpid()} working on {bam_file} ...')
+    log(f'Process {os.getpid()} working on {bam_file} ...')
     start_time = time.time()
     with pysam.AlignmentFile(bam_file, 'rb') as pysam_bamfile:
 
@@ -152,7 +152,7 @@ def plot(args, chunk, data) -> str:
     # plot it
     sns.set(style="whitegrid")
     fig, ax = plt.subplots(figsize=(20, 9))
-    sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8)
+    sns.lineplot(data=data, linewidth=1.5, dashes=False, alpha=0.8, legend=False)
 
     # formatting and annotation
     ydn, yup = plt.ylim()
@@ -179,6 +179,9 @@ def plot(args, chunk, data) -> str:
     locs, labels = plt.xticks()
     plt.xticks(locs, [f'{int(pos):,}' for pos in locs])
     plt.xlim(xlims)
+
+    short_names = [name.rsplit('/', 1)[-1].rstrip('.bam') for name in data.columns]
+    plt.legend(labels=short_names)
 
     # save figure
     plt.savefig(output_name, bbox_inches='tight')
