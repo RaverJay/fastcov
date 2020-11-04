@@ -168,12 +168,14 @@ def plot(args, chunk, data) -> str:
     plt.vlines([chunk.start + .5, chunk.end + .5], *plt.ylim(),
                'grey', linestyles='dashed', linewidth=.5)
     plt.title(f'Coverage at {chunk.reference}:{chunk.start + 1}-{chunk.end}')
-    plt.ylabel('coverage')
-    plt.xlabel('reference position')
-    plt.text(0.045, 0.065, str(chunk.start + 1), rotation=90,
+    plt.ylabel('Coverage')
+    plt.xlabel('Reference position')
+    plt.text(0.045, 0.065, f'{(chunk.start + 1):,}', rotation=90,
              ha='right', va='bottom', transform=ax.transAxes)
-    plt.text(0.956, 0.065, str(chunk.end), rotation=90,
+    plt.text(0.956, 0.065, f'{(chunk.end):,}', rotation=90,
              ha='left', va='bottom', transform=ax.transAxes)
+    locs, labels = plt.xticks()
+    plt.xticks(locs, [f'{int(pos):,}' for pos in locs])
 
     # save figure
     plt.savefig(output_name, bbox_inches='tight')
