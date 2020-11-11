@@ -1,8 +1,10 @@
-# fastcov
+# ⚡ fastcov
 
 For when you just need a coverage plot.
 
 Feature requests welcome!
+
+![lhzFrLVRbC](https://user-images.githubusercontent.com/23377960/97777205-f1157580-1b6e-11eb-9dd1-908580c52b92.gif)
 
 ## Quick start
 ```
