@@ -12,10 +12,14 @@ import seaborn as sns
 import pysam
 import matplotlib as mpl
 
+import warnings
+
 from input_interpretation import parse_args, check_input, parse_or_infer_reference_and_position, BamFileChunk
 from custom_logging import log
 
 mpl.use('Agg')  # do not require X window
+# suppress matplotlib warning, e.g. about legend
+warnings.filterwarnings("ignore")
 
 
 def fastcov_main():
