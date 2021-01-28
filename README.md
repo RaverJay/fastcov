@@ -35,13 +35,14 @@ optional arguments:
                         Format: <ref_name>[:<start>-<stop>] Coordinates are
                         1-based and inclusive. Start and/or stop are optional
                         with fallbacks 1 and <length_of_ref> respectively
-                        (e.g. 'chr1', 'chr1:-400' and 'chr1:4000-' are legal)
+                        (i.e. 'chr1', 'chr1:-200', 'chr1:100-' and
+                        'chr1:100-200 are legal)
   -l, --logscale        Use logarithmic scale on y-axis.
   -o OUTPUT_FILE, --output_file OUTPUT_FILE
                         Specify plot output filename. File extension defines
                         the format (default: fastcov_output.pdf)
   -c CSV_OUT, --csv_out CSV_OUT
-                        Specify csv data output filename. Will disable plot
-                        output by default, specify --outfile to re-enable plot
-                        output.
+                        Specify csv data output filename. Use '-' to write to
+                        stdout. Will disable plot output by default, specify
+                        --output_file to re-enable plot output.
 ```
