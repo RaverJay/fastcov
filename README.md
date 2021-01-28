@@ -12,7 +12,6 @@ Feature requests welcome!
 
 ![logplot of SARS-CoV-2 coverages](images/example.png "logplot of SARS-CoV-2 coverages")
 
-
 ## Quick start
 ```
 fastcov.py my_alignment.bam another_alignment.bam
