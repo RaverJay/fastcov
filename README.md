@@ -8,7 +8,7 @@ Feature requests welcome!
 
 ## Example
 
-`./fastcov.py -l -o example.png *.bam`
+`./fastcov.py -l -o example.png flowcell*.bam`
 
 ![logplot of SARS-CoV-2 coverages](images/example.png "logplot of SARS-CoV-2 coverages")
 
@@ -21,9 +21,9 @@ generates a coverage plot called `fastcov_output.pdf`
 
 ## Dependencies
 makes use of
+* `pysam`
 * `numpy`
 * `pandas`
-* `pysam`
 * `seaborn`
 
 ## Full usage
