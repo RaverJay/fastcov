@@ -30,7 +30,10 @@ def parse_args():
     parser.add_argument("-c", "--csv_out",
                         help="Specify csv data output filename. Use '-' to write to stdout. Will disable plot output by default, "
                              "specify --output_file to re-enable plot output.")
+    parser.add_argument("--csv_no_header", action='store_true',
+                        help="Suppress column names in csv output.")
     args = parser.parse_args()
+
     return args
 
 

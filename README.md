@@ -21,6 +21,7 @@ makes use of
 ## Full usage
 ```
 usage: fastcov.py [-h] [-p POSITION] [-l] [-o OUTPUT_FILE] [-c CSV_OUT]
+                  [--csv_no_header]
                   bamfile [bamfile ...]
 
 Plot the coverage based on some bam files.
@@ -45,4 +46,5 @@ optional arguments:
                         Specify csv data output filename. Use '-' to write to
                         stdout. Will disable plot output by default, specify
                         --output_file to re-enable plot output.
+  --csv_no_header       Suppress column names in csv output.
 ```
