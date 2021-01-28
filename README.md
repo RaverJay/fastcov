@@ -1,8 +1,17 @@
-# fastcov
+# fastcov.py
 
 For when you just need a coverage plot.
 
+Just throw in your indexed bamfiles, done. Will process the files in parallel. Uses the first reference of the first file if you don't give a specific genomic position.
+
 Feature requests welcome!
+
+## Example
+
+`./fastcov.py -l -o example.png *.bam`
+
+![logplot of SARS-CoV-2 coverages](images/example.png "logplot of SARS-CoV-2 coverages")
+
 
 ## Quick start
 ```
