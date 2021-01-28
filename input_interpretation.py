@@ -28,7 +28,7 @@ def parse_args():
                         help="Specify plot output filename. File extension defines the format "
                              "(default: fastcov_output.pdf)")
     parser.add_argument("-c", "--csv_out",
-                        help="Specify csv data output filename. Will disable plot output by default, "
+                        help="Specify csv data output filename. Use '-' to write to stdout. Will disable plot output by default, "
                              "specify --output_file to re-enable plot output.")
     args = parser.parse_args()
     return args

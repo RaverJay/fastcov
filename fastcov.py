@@ -4,6 +4,7 @@
 
 from matplotlib import pyplot as plt
 import os
+import sys
 import time
 from multiprocessing import Pool
 import numpy as np
@@ -70,9 +71,14 @@ def fastcov_main():
 
     # data output
     if args.csv_out:
-        log('Writing csv ...')
-        data.to_csv(args.csv_out)
-        log(f'Wrote csv data to {args.csv_out}')
+        if args.csv_out == '-':
+            log('Writing csv to stdout ...')
+            data.to_csv(sys.stdout)
+            log(f'Wrote csv data to stdout')
+        else:
+            log('Writing csv ...')
+            data.to_csv(args.csv_out)
+            log(f'Wrote csv data to {args.csv_out}')
         if not args.output_file:
             do_plots = False
 
