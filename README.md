@@ -14,7 +14,8 @@ generates a coverage plot called `fastcov_output.pdf`
 
 ## Example
 
-* get a logplot of some SARS-CoV-2 direct RNA sequencing data
+Get a logplot of some SARS-CoV-2 direct RNA sequencing data
+
 `./fastcov.py -l -o example.png flowcell*.bam`
 
 ![logplot of SARS-CoV-2 coverages](/images/example.png)
