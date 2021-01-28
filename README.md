@@ -10,7 +10,7 @@ Feature requests welcome!
 
 `./fastcov.py -l -o example.png flowcell*.bam`
 
-![logplot of SARS-CoV-2 coverages](images/example.png)
+![logplot of SARS-CoV-2 coverages](/images/example.png)
 
 ## Quick start
 ```
