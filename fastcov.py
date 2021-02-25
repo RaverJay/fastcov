@@ -190,7 +190,7 @@ def plot(args, chunk, data) -> str:
     plt.xticks(locs, [f'{int(pos):,}' for pos in locs])
     plt.xlim(xlims)
 
-    short_names = [name.rsplit('/', 1)[-1].rstrip('.bam') for name in data.columns]
+    short_names = [name.rsplit('/', 1)[-1][:-4] if name.endswith('.bam') else name.rsplit('/', 1)[-1]  for name in data.columns]
     plt.legend(labels=short_names)
 
     # save figure
