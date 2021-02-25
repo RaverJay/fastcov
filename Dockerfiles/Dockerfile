@@ -1,6 +1,6 @@
 FROM continuumio/miniconda3
 ENV TOOL=fastcov
-ENV VERSION=v0.1.2
+ENV VERSION=0.1.3
 
 RUN apt update && apt install -y procps wget gzip && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
