@@ -11,7 +11,7 @@ RUN conda config --add channels default && \
  
 
 RUN conda install mamba
-RUN mamba install matplotlib pandas pysam seaborn
+RUN mamba install matplotlib pandas openpyxl pysam seaborn
 RUN conda clean -a
 
 RUN git clone -b $VERSION https://github.com/RaverJay/$TOOL.git
